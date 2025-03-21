@@ -1,4 +1,4 @@
-import { RecordingFile } from "@/app/detail/page";
+import { RecordingFile } from "@/components/detail-content";
 import {
   GetObjectCommand,
   ListObjectsV2Command,

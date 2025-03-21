@@ -41,7 +41,7 @@ export const getRecordingListClient = async () => {
 
     return recordings;
   } catch (error) {
-    return "error";
+    return [];
   }
 };
 
@@ -78,6 +78,6 @@ export const getDetailRecording = async (id: string) => {
       ),
     };
   } catch (error) {
-    return "error";
+    return [];
   }
 };
