@@ -39,13 +39,14 @@ interface IVideoURLS {
 
 const DetailPage = () => {
   const params = useSearchParams();
-  const id = params.get("id");
+  let id = params.get("id");
+
   const [data, setData] = useState<IDataDetail>();
   const [videoUrls, setVideoUrls] = useState<IVideoURLS[]>([]);
 
   useEffect(() => {
     if (id) {
-      getDetailRecording(id as any).then((response) => {
+      getDetailRecording(decodeURIComponent(id) as any).then((response) => {
         setData(response as any);
       });
     }

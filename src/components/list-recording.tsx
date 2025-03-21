@@ -43,7 +43,9 @@ const ListRecording = () => {
                 <td className="p-2">
                   <button
                     className="border border-slate-300 rounded-md p-2"
-                    onClick={() => router.push(`/detail?id=${item.id}`)}
+                    onClick={() =>
+                      router.push(`/detail?id=${encodeURIComponent(item.id)}`)
+                    }
                   >
                     Detail
                   </button>
