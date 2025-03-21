@@ -1,10 +1,11 @@
+import TestDevices from "@/components/TestDevices";
 import { getData } from "@/data/getToken";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 
 const Videocall = dynamic<{ slug: string; JWT: string }>(
   () => import("../../../components/Videocall"),
-  { ssr: false },
+  { ssr: false }
 );
 
 export default async function Page({ params }: { params: { slug: string } }) {
