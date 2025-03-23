@@ -1,10 +1,10 @@
-import TestDevices from "@/components/TestDevices";
 import React from "react";
+import TestDevicesWithZoom from "@/components/TestDevicesWithZoom";
 
 const TestDevicePage = () => {
   return (
     <div>
-      <TestDevices />
+      <TestDevicesWithZoom />
     </div>
   );
 };
