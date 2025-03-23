@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const id = decodeURIComponent(request.nextUrl.searchParams.get("id") || "");
+  const id = request.nextUrl.search.split("id=")[1];
   const token = process.env.NEXT_PUBLIC_DUMMY_JWT; // Your Zoom JWT token
 
   if (!token) {
