@@ -10,6 +10,7 @@ import ZoomVideo, {
 import { CameraButton, MicButton } from "./MuteButtons";
 import { PhoneOff } from "lucide-react";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 // interface ISessionInfo {
 //   isInMeeting: boolean
@@ -168,6 +169,12 @@ const Videocall = (props: { slug: string; JWT: string }) => {
           >
             {isLoading ? "Loading" : "Join"}
           </Button>
+          <Link
+            href={"/test-device"}
+            className="text-center mt-3 text-blue-700 hover:text-blue-500"
+          >
+            Test device here
+          </Link>
         </div>
       ) : (
         <div className="flex w-full flex-col justify-around self-center">

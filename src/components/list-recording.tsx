@@ -17,8 +17,6 @@ const ListRecording = () => {
       });
   }, []);
 
-  console.log("DATAA", data);
-
   return (
     <div className="mt-5">
       <h2 className="font-semibold text-2xl">Recordings</h2>
