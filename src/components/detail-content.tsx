@@ -1,7 +1,7 @@
 "use client";
 
 import { getDetailRecording } from "@/lib/api-client";
-import { getS3Recording } from "@/lib/getS3Recording";
+import { fetchS3Files } from "@/lib/getS3Recording";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 
@@ -46,7 +46,7 @@ const DetailPageContent = () => {
 
   useEffect(() => {
     if (id) {
-      getDetailRecording(decodeURIComponent(id) as any).then((response) => {
+      getDetailRecording(id).then((response) => {
         setData(response as any);
       });
     }
@@ -54,7 +54,7 @@ const DetailPageContent = () => {
 
   useEffect(() => {
     if (data) {
-      getS3Recording(data.recording_files).then((res) => {
+      fetchS3Files(data.recording_files).then((res) => {
         setVideoUrls(res as any);
       });
     }
@@ -82,16 +82,20 @@ const DetailPageContent = () => {
         </p>
       </div>
 
-      <div>
-        {videoUrls?.map((record) => (
-          <video
-            key={record.key}
-            src={record.url}
-            height={300}
-            width={300}
-            controls
-          />
-        ))}
+      <div className="mt-4">
+        {videoUrls && videoUrls.length > 0 ? (
+          videoUrls?.map((record) => (
+            <video
+              key={record.key}
+              src={record.url}
+              height={300}
+              width={300}
+              controls
+            />
+          ))
+        ) : (
+          <p className="text-slate-400 italic">No video recording</p>
+        )}
       </div>
     </div>
   );
