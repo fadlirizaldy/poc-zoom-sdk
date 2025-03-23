@@ -1,5 +1,10 @@
 import React from "react";
-import TestDevicesWithZoom from "@/components/TestDevicesWithZoom";
+import dynamic from "next/dynamic";
+
+const TestDevicesWithZoom = dynamic(
+  () => import("@/components/TestDevicesWithZoom"),
+  { ssr: false }
+);
 
 const TestDevicePage = () => {
   return (

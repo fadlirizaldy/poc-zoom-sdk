@@ -1,3 +1,5 @@
+"use client";
+
 import { getDetailRecording } from "@/lib/api-client";
 import { getS3Recording } from "@/lib/getS3Recording";
 import { useSearchParams } from "next/navigation";
