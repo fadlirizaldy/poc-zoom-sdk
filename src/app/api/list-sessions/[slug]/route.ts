@@ -25,7 +25,7 @@ export async function GET(
     );
 
     if (!response.ok) {
-      return null;
+      return NextResponse.json({ error: "Something wrong", status: 400, data: [] });
     }
 
     const data = await response.json();

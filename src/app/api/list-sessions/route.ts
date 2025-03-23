@@ -44,6 +44,11 @@ export async function GET() {
     }));
 
     return NextResponse.json({ status: 200, data: recordings });
-  } catch (error) {}
-  return;
+  } catch (error) {
+    return NextResponse.json({
+      error: "Failed to fetch recording",
+      status: 404,
+      data: [],
+    });
+  }
 }
