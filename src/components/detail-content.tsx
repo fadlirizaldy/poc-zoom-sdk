@@ -40,7 +40,6 @@ interface IVideoURLS {
 const DetailPageContent = () => {
   const params = useSearchParams();
   let id = params.get("id");
-  console.log("idddd", id);
 
   const [data, setData] = useState<IDataDetail>();
   const [videoUrls, setVideoUrls] = useState<IVideoURLS[]>([]);
