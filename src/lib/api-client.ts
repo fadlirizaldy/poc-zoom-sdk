@@ -1,6 +1,9 @@
 export const getRecordingListClient = async () => {
   try {
-    const response = await fetch("/api/list-sessions", { method: "GET" });
+    const response = await fetch("/api/list-sessions", {
+      method: "GET",
+      cache: "no-cache",
+    });
 
     if (!response.ok) {
       return [];
@@ -62,6 +65,7 @@ export const getDetailRecording = async (id: string) => {
     const response = await fetch(`/api/list-sessions/detail`, {
       method: "POST",
       body: JSON.stringify({ id }),
+      cache: "no-cache",
     });
 
     if (!response.ok) {
