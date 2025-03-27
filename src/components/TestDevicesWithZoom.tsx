@@ -17,9 +17,38 @@ const TestDevicesWithZoom = () => {
   const localVideoTrack = useRef<any>();
   const localAudioTrack = useRef<any>();
   const microphoneTester = useRef<any>(null);
+  const liveTranscription = useRef<any>(null);
 
   const [isTesting, setIsTesting] = useState(false);
   const [micLevel, setMicLevel] = useState(0);
+
+  const [transcriptions, setTranscriptions] = useState<string[]>([]);
+
+  // useEffect(() => {
+  //   if (isTesting) {
+  //     const trans = async () => {
+  //       try {
+  //         const liveTranscriptionTranslation =
+  //           client.current.getLiveTranscriptionClient();
+
+  //         console.log("popop");
+  //         await liveTranscriptionTranslation.startLiveTranscription();
+
+  //         // Listen for transcription messages
+  //         client.current.on("caption-message", (payload) => {
+  //           console.log(`${payload} said: ${payload.text}`);
+  //           setTranscriptions((prev) => [
+  //             ...prev,
+  //             `${payload.displayName}: ${payload.text}`,
+  //           ]);
+  //         });
+  //       } catch (error) {
+  //         console.log("error", error);
+  //       }
+  //     };
+  //     trans();
+  //   }
+  // }, [isTesting]);
 
   const startTesting = async () => {
     try {
@@ -29,6 +58,7 @@ const TestDevicesWithZoom = () => {
       const tmpVideoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
+
       const tmpMicrophoneDevices = devices.filter(
         (device) => device.kind === "audioinput"
       );
@@ -55,44 +85,62 @@ const TestDevicesWithZoom = () => {
 
       videoDevices.current = tmpVideoDevices;
       audioDevices.current = tmpMicrophoneDevices;
+
+      // START LIVE TRANSCRIPTION
+      // const liveTranscriptionTranslation =
+      //   client.current.getLiveTranscriptionClient();
+
+      // console.log("liveee", liveTranscriptionTranslation);
+      // // Start live transcription
+      // await liveTranscriptionTranslation.startLiveTranscription();
+      // // liveTranscriptionTranslation.setTranslationLanguage("id");
+      // // liveTranscriptionTranslation.setSpeakingLanguage("id");
+
+      // // Set up transcription event listener
+      // client.current.on("caption-message", (payload) => {
+      //   console.log(`${payload.displayName} said: ${payload.text}`);
+      //   setTranscriptions((prev) => [
+      //     ...prev,
+      //     `${payload.displayName}: ${payload.text}`,
+      //   ]);
+      // });
+
       setIsTesting(true);
     } catch (error) {
       console.error("Error starting test:", error);
     }
   };
 
-  useEffect(() => {
-    if (isTesting && localAudioTrack.current) {
-      microphoneTester.current = localAudioTrack.current.testMicrophone({
-        speakerId: null, // No need for speaker output
-        onAnalyseFrequency: (v: number) => {
-          setMicLevel(v); // Dynamically update mic level
-        },
-      });
+  // useEffect(() => {
+  //   if (isTesting && localAudioTrack.current) {
+  //     microphoneTester.current = localAudioTrack.current.testMicrophone({
+  //       speakerId: null, // No need for speaker output
+  //       onAnalyseFrequency: (v: number) => {
+  //         setMicLevel(v); // Dynamically update mic level
+  //       },
+  //     });
 
-      return () => {
-        microphoneTester.current?.stop();
-        microphoneTester.current = null;
-      };
-    }
-  }, [isTesting]);
+  //     return () => {
+  //       microphoneTester.current?.stop();
+  //       microphoneTester.current = null;
+  //     };
+  //   }
+  // }, [isTesting]);
 
-  const stopTesting = () => {
+  const stopTesting = async () => {
     localVideoTrack.current.stop();
     localAudioTrack.current.stop();
     microphoneTester.current?.destroy(); // Stop speaker test
     microphoneTester.current = null;
+
+    // Stop live transcription
+    const liveTranscriptionTranslation = client.current.getLiveTranscriptionClient();
+    liveTranscriptionTranslation.disableCaptions(true);
+
+    // Remove caption message listener
+    client.current.off("caption-message", () => {});
     setIsTesting(false);
   };
-
-  console.log(
-    "DEVICEE",
-    videoDevices,
-    localVideoTrack,
-    "AUDIO",
-    audioDevices,
-    localAudioTrack
-  );
 
   return (
     <div className="flex h-full w-full flex-1 flex-col mt-10 items-center">
@@ -103,6 +151,13 @@ const TestDevicesWithZoom = () => {
           {isTesting ? "Stop Testing" : "Start Testing"}
         </Button>
       </div>
+
+      {isTesting && (
+        <div>
+          <h2>Text:</h2>
+          <p>{transcriptions}</p>
+        </div>
+      )}
 
       <div className={`${isTesting ? "block" : "hidden"}`}>
         {/* @ts-expect-error html component */}

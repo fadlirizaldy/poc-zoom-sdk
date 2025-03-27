@@ -94,6 +94,7 @@ const Videocall = (props: { slug: string; JWT: string }) => {
 
       setIsVideoMuted(!mediaStream.isCapturingVideo());
       await client.current.getRecordingClient().startCloudRecording();
+      // await client.current.getRecordingClient().pauseCloudRecording();
 
       setSessionInfo(client.current.getSessionInfo());
       console.log("session info", client.current.getSessionInfo());
